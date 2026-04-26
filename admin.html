@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="admin">
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Localhost Only</p>
+      <h1>News Admin</h1>
+    </div>
+    <nav class="topbar-nav">
+      <a class="nav-link" href="index.html">User View</a>
+      <a class="nav-link active" href="admin.html">Admin Panel</a>
+    </nav>
+  </header>
+
+  <main class="page-wrap admin-layout">
+    <section class="card panel">
+      <div class="section-head">
+        <p class="eyebrow">CRUD</p>
+        <h2 id="formTitle">Add News</h2>
+        <p>Use the form to create or update news articles.</p>
+      </div>
+
+      <div id="message" class="message" aria-live="polite"></div>
+
+      <form id="newsForm" class="news-form" novalidate>
+        <input type="hidden" id="newsId" />
+
+        <label>
+          <span>Title</span>
+          <input type="text" id="title" placeholder="Enter article title" required />
+        </label>
+
+        <label>
+          <span>Category</span>
+          <input type="text" id="category" placeholder="Tech, Sports, Business..." required />
+        </label>
+
+        <label>
+          <span>Content</span>
+          <textarea id="content" rows="6" placeholder="Write the news content..." required></textarea>
+        </label>
+
+        <label>
+          <span>Image URL</span>
+          <input type="url" id="image" placeholder="https://example.com/image.jpg" required />
+        </label>
+
+        <div class="form-actions">
+          <button class="primary-btn" type="submit" id="saveBtn">Add News</button>
+          <button class="secondary-btn" type="button" id="resetBtn">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card panel">
+      <div class="section-head">
+        <p class="eyebrow">Published Data</p>
+        <h2>Current Articles</h2>
+        <p>Updates are sent to the backend with <code>fetch()</code>.</p>
+      </div>
+      <div id="adminList" class="admin-list"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

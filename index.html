@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="user">
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Daily Updates</p>
+      <h1>News Portal</h1>
+    </div>
+    <p class="topbar-note">Fresh stories loaded with <code>fetch()</code>.</p>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Frontend View</p>
+        <h2>Latest news articles</h2>
+        <p class="hero-copy">
+          Browse articles from the shared <code>news.json</code> file. Use search,
+          category filters, and sorting to explore the latest updates.
+        </p>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <span id="articleCount">0</span>
+          <small>Articles</small>
+        </div>
+        <div>
+          <span id="categoryCount">0</span>
+          <small>Categories</small>
+        </div>
+      </div>
+    </section>
+
+    <section class="toolbar card">
+      <label>
+        <span>Search</span>
+        <input id="searchInput" type="search" placeholder="Search title or content..." />
+      </label>
+      <label>
+        <span>Category</span>
+        <select id="categoryFilter">
+          <option value="all">All categories</option>
+        </select>
+      </label>
+      <label>
+        <span>Sort</span>
+        <select id="sortSelect">
+          <option value="latest">Latest first</option>
+          <option value="oldest">Oldest first</option>
+        </select>
+      </label>
+    </section>
+
+    <div id="message" class="message" aria-live="polite"></div>
+
+    <section id="newsGrid" class="news-grid"></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
