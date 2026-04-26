@@ -49,6 +49,10 @@ async function initAdminPage() {
   const form = document.getElementById("newsForm");
   const resetBtn = document.getElementById("resetBtn");
   const list = document.getElementById("adminList");
+  const imageFileInput = document.getElementById("imageFile");
+  const imagePreview = document.getElementById("imagePreview");
+
+  form.dataset.imageValue = "";
 
   await refreshAdminList();
 
@@ -57,6 +61,7 @@ async function initAdminPage() {
     clearForm();
     showMessage("Form reset.", "success");
   });
+  imageFileInput.addEventListener("change", handleImageSelection);
 
   async function refreshAdminList() {
     const news = await fetchNewsData("api");
@@ -114,7 +119,9 @@ async function initAdminPage() {
       document.getElementById("title").value = item.title;
       document.getElementById("category").value = item.category;
       document.getElementById("content").value = item.content;
-      document.getElementById("image").value = item.image;
+      form.dataset.imageValue = item.image;
+      setPreview(item.image);
+      imageFileInput.value = "";
       showMessage("Edit the fields and click Update News.", "success");
     } catch (error) {
       showMessage(error.message, "error");
@@ -161,7 +168,8 @@ async function initAdminPage() {
                 <p><strong>ID:</strong> ${escapeHtml(item.id)}</p>
                 <p><strong>Category:</strong> ${escapeHtml(item.category)}</p>
                 <p><strong>Date:</strong> ${escapeHtml(item.date)}</p>
-                <p><strong>Image:</strong> ${escapeHtml(item.image)}</p>
+                <p><strong>Image:</strong></p>
+                <img class="admin-thumb" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" />
                 <p>${escapeHtml(item.content)}</p>
               </div>
             </div>
@@ -181,6 +189,32 @@ async function initAdminPage() {
     list.querySelectorAll("[data-delete]").forEach((button) => {
       button.addEventListener("click", () => deleteNews(button.dataset.delete));
     });
+  }
+
+  function handleImageSelection(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) {
+      setPreview(form.dataset.imageValue || "");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      form.dataset.imageValue = reader.result;
+      setPreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function setPreview(src) {
+    if (!src) {
+      imagePreview.removeAttribute("src");
+      imagePreview.parentElement.classList.remove("has-image");
+      return;
+    }
+
+    imagePreview.src = src;
+    imagePreview.parentElement.classList.add("has-image");
   }
 }
 
@@ -284,7 +318,7 @@ function getFormValues() {
     title: document.getElementById("title").value.trim(),
     category: document.getElementById("category").value.trim(),
     content: document.getElementById("content").value.trim(),
-    image: document.getElementById("image").value.trim()
+    image: document.getElementById("newsForm").dataset.imageValue || ""
   };
 }
 
@@ -293,7 +327,7 @@ function validateNews(payload) {
   if (!payload.title) errors.push("Title is required.");
   if (!payload.category) errors.push("Category is required.");
   if (!payload.content) errors.push("Content is required.");
-  if (!payload.image) errors.push("Image URL is required.");
+  if (!payload.image) errors.push("Please upload an image.");
   return errors;
 }
 
@@ -302,6 +336,11 @@ function clearForm() {
   document.getElementById("newsId").value = "";
   document.getElementById("formTitle").textContent = "Add News";
   document.getElementById("saveBtn").textContent = "Add News";
+  const form = document.getElementById("newsForm");
+  const imagePreview = document.getElementById("imagePreview");
+  form.dataset.imageValue = "";
+  imagePreview.removeAttribute("src");
+  imagePreview.parentElement.classList.remove("has-image");
 }
 
 function showMessage(text, type) {

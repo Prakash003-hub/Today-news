@@ -47,8 +47,16 @@
         </label>
 
         <label>
-          <span>Image URL</span>
-          <input type="url" id="image" placeholder="https://example.com/image.jpg" required />
+          <span>Image Upload</span>
+          <input type="file" id="imageFile" accept="image/*" />
+          <span class="field-hint">Choose an image file. It will be saved as a data image in JSON.</span>
+        </label>
+
+        <label>
+          <span>Image Preview</span>
+          <div class="image-preview">
+            <img id="imagePreview" alt="Selected news image preview" />
+          </div>
         </label>
 
         <div class="form-actions">
